@@ -5,9 +5,9 @@ const app = express();
 
 const { PORT } = require('./config')
 
-const cronJob = require('./service')
+const schedulerPowerData = require('./service/scheduler-power-data.service')
 
-cronJob.start()
+schedulerPowerData.start()
 
 app.listen(PORT, () => {
   console.log("App is running on port " + PORT);
