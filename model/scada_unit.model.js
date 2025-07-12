@@ -4,8 +4,6 @@ const moment = require('moment');
 const { sqlConfig } =require("../config")
 
 async function getAllScadaUnitMeter() {
-  console.log(sqlConfig, "<<< sqlConfig");
-  
   const pool = await sql.connect(sqlConfig);
   const result = await pool.request()
     .query(`
@@ -31,13 +29,8 @@ async function getAllScadaUnitMeter() {
 }
 
 async function getDataEvent() {
-  console.log(sqlConfig, "<<< sqlConfig");
-
   const pool = await sql.connect(sqlConfig);
   const targetTime = moment().subtract(1, 'minute').seconds(0).milliseconds(0).format('YYYY-MM-DD HH:mm:ss');
-
-  console.log(targetTime, "<<< targetTime");
-  
 
   const result = await pool.request()
     .input('targetTime', sql.DateTime, targetTime)
@@ -46,8 +39,6 @@ async function getDataEvent() {
       JOIN SCADA_POINT SPT ON SCL.pid = SPT.pid
       WHERE SCL.controlTime >= @targetTime
     `);
-
-  console.log(result, "<<< result");
 
   return result?.recordset;
 }
