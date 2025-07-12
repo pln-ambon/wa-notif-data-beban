@@ -34,7 +34,7 @@ const config = {
   WABLAS_TOKEN,
   WA_GROUP_ID,
   WA_PRIVATE_ID,
-  PORT
+  PORT: PORT ? Number(PORT) : 7001
 }
 
 module.exports = config

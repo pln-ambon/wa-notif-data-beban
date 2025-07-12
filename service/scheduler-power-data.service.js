@@ -1,5 +1,4 @@
 const cron = require("node-cron");
-const sql = require('mssql')
 const moment = require("moment");
 const {
   getAllScadaUnitMeter,

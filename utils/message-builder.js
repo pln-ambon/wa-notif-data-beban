@@ -76,6 +76,61 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload }) {
   return message
 }
 
+function dateEventMessage({day, notifTime, payload }) {
+
+  const {
+    id,
+    substation,
+    point,
+    elemen,
+    controlString,
+    controlBy,
+    result,
+    failreason,
+    controlTime
+  } = payload
+
+  const controlStatus = "-";
+  if (typeof controlString === "string") {
+    if (controlString.includes("(1)")) {
+      controlStatus = "On";
+    } else if (controlString.includes("(0)")) {
+      controlStatus = "Off";
+    } else {
+      controlStatus = controlString;
+    }
+  }
+
+  const formattedControlTime = controlTime
+    ? moment(controlTime).locale('id').format('dddd, DD/MM/YYYY HH:mm:ss')
+    : "-";
+
+  const content = `
+    *Data Event Control - Sistem Ambon*
+    ========================
+    *${day} ${notifTime}*
+    ========================
+    Id             : ${id}
+    Site           : ${substation}
+    Unit           : ${point}; ${elemen}
+    Control        : ${controlStatus}
+    Result         : ${result}
+    Reason         : ${failreason || "-"}
+    Control By     : ${controlBy}
+    Control Time   : ${formattedControlTime}
+    `
+  const message = {
+    "phone": WA_PRIVATE_ID,
+    "message": content,
+    "isGroup": false
+  }
+
+  return message
+}
+
+
+
 module.exports = {
   loadDataMessage,
+  dateEventMessage
 }
