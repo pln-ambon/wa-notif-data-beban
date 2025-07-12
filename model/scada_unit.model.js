@@ -36,6 +36,9 @@ async function getDataEvent() {
   const pool = await sql.connect(sqlConfig);
   const targetTime = moment().subtract(1, 'minute').seconds(0).milliseconds(0).format('YYYY-MM-DD HH:mm:ss');
 
+  console.log(targetTime, "<<< targetTime");
+  
+
   const result = await pool.request()
     .input('targetTime', sql.DateTime, targetTime)
     .query(`
@@ -43,6 +46,8 @@ async function getDataEvent() {
       JOIN SCADA_POINT SPT ON SCL.pid = SPT.pid
       WHERE SCL.controlTime >= @targetTime
     `);
+
+  console.log(result, "<<< result");
 
   return result?.recordset;
 }
