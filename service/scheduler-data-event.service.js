@@ -6,6 +6,8 @@ const {
 } = require("../model/scada_unit.model")
 const { dateEventMessage } = require("../utils/message-builder");
 const { sendMessageToWaBlas } = require("./wablas.service")
+const { formatDate } = require("../utils")
+
 const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
 
 // Running job every minutes
