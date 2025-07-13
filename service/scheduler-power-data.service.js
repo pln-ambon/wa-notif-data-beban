@@ -76,6 +76,8 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
     }, {});
 
     // Get data current
+    let time
+
     const currentData = data.reduce((acc, obj) => {
       const key = obj.unit_name;
       if (!acc[key]) {
