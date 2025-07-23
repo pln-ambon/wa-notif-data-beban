@@ -43,7 +43,39 @@ async function getDataEvent() {
   return result?.recordset;
 }
 
+async function insertIntoPowerHistories({ payload }) {
+  if ( payload.length ) {
+    const values = payload
+    .map(item => `(${item.unit_id}, ${item.p})`)
+    .join(', ');
+
+    const pool = await sql.connect(sqlConfig);
+
+    await pool.request().query(`
+      INSERT INTO POWER_HISTORIES (unit_id, p)
+      VALUES ${values}
+    `);
+  }
+}
+
+async function getPowerHistoriesByTime({ startTime, endTime }) {
+  const pool = await sql.connect(sqlConfig);
+
+  const result = await pool.request()
+    .input('startTime', sql.DateTime, startTime)
+    .input('endTime', sql.DateTime2, endTime)
+    .query(`
+      SELECT *
+      FROM POWER_HISTORIES
+      WHERE [time] >= @startTime AND [time] <= @endTime
+    `);
+
+  return result.recordset;
+}
+
 module.exports = {
   getAllScadaUnitMeter,
-  getDataEvent
+  getDataEvent,
+  insertIntoPowerHistories,
+  getPowerHistoriesByTime
 }

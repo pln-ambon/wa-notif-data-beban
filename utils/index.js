@@ -13,7 +13,9 @@ function formatDate(payload) {
   let hour = `${date.split("T")[1]}`
   let newHour = `${hour.split("Z")[0]}`
 
-  return `${day} ${newHour}`
+  let hourMinute = newHour.split(":")[0] + ":" + newHour.split(":")[1]
+
+  return `${day} ${hourMinute}`
 }
 
 function timeDuration (value){

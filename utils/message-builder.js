@@ -1,8 +1,10 @@
 const { WA_GROUP_ID, WA_PRIVATE_ID } = require('../config')
 const { formatNumber } = require("./index")
 
-function loadDataMessage({day, notifTime, powerPayload, currentPayload }) {
-
+function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviation }) {
+  const ARROW_UP = '▲ Naik';
+  const ARROW_DOWN = '▼ Turun';
+  
   const {
     "PLTD HATIVE KECIL": pltdHativeKecil,
     "PLTMG WAAI": pltmgWaai,
@@ -12,6 +14,7 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload }) {
     "GI SIRIMAU": giSirimau,
     "GI HATIVE BESAR": giHativeBesar,
     "GIS PASSO": gisPasso,
+    grandTotal: grandTotal
   } = powerPayload
 
   const {
@@ -19,11 +22,20 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload }) {
     "GIS PASSO": gisPassoCurrent,
   } = currentPayload
 
+  const {
+    deviation2Hours,
+    deviation24Hours
+  } = deviation
+
   const content = `  
     *Data Beban - Sistem Ambon*
     ========================
     *${day} ${notifTime}*
     ========================
+    Total Beban Sistem saat ini *${formatNumber(grandTotal?.p)}* MW
+    ${deviation2Hours > 0 ? ARROW_UP : ARROW_DOWN} *${formatNumber(Math.abs(deviation2Hours))} MW* dari 2 jam sebelumnya
+    ${deviation24Hours > 0 ? ARROW_UP : ARROW_DOWN} *${formatNumber(Math.abs(deviation24Hours))} MW* di jam sama H-1
+    ----------------------------------
     *BMPP WAAI     ➤ ${formatNumber(bmppWaai?.total?.p)} MW*
     GEN1           : ${formatNumber(bmppWaai?.detail[0]?.p)} MW
     GEN2           : ${formatNumber(bmppWaai?.detail[1]?.p)} MW

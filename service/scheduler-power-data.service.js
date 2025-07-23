@@ -2,6 +2,7 @@ const cron = require("node-cron");
 const moment = require("moment");
 const {
   getAllScadaUnitMeter,
+  insertIntoPowerHistories
 } = require("../model/scada_unit.model")
 const { loadDataMessage } = require("../utils/message-builder");
 const { sendMessageToWaBlas } = require("./wablas.service")
@@ -189,11 +190,45 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
       return acc;
     }, {});
 
+    powerData.grandTotal = grandTotal
+
+    // getdata power histories 2 hours ago
+    const totalPower2HoursAgo = await getTotalPowerHistories2HoursAgo();
+
+    // getdata power histories 24 hours ago
+    const totalPower24HoursAgo = await getTotalPowerHistories24HoursAgo();
+
+    const deviation = {
+      deviation2Hours: grandTotal.p - totalPower2HoursAgo,
+      deviation24Hours: grandTotal.p - totalPower24HoursAgo
+    }
+
+    // insert data to histories
+    const {
+      "BMPP WAAI": bmppWaai,
+      "PLTMG WAAI": pltmgWaai,
+    } = powerData
+
+    const dataInsert = [
+      {
+        unit_id: 11,
+        p: pltmgWaai?.total?.p ? pltmgWaai?.total?.p * 1000 : 0,
+      },
+      {
+        unit_id: 12,
+        p: bmppWaai?.total?.p ? bmppWaai?.total?.p * 1000 : 0,
+      }
+    ]
+
+    await insertIntoPowerHistories({ payload: dataInsert })
+
+    // send message to wablas
     const message = loadDataMessage({
       powerPayload: powerData,
       currentPayload: currentData,
       day,
-      notifTime
+      notifTime,
+      deviation
     });
 
     await sendMessageToWaBlas(message)
@@ -202,5 +237,35 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
     console.log(error, "<<< error")
   }
 });
+
+async function getTotalPowerHistories2HoursAgo() {
+  const targetMoment = moment().subtract(2, 'hours').seconds(0).milliseconds(0);
+  const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
+  const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
+
+  const data = await getPowerHistoriesByTime({ startTime, endTime });
+  const total = data.reduce((acc, item) => {
+    acc.p += item.p;
+    return acc;
+  }, { p: 0 });
+
+  return total?.p ? total.p / 1000 : 0;  // convert to MW
+
+}
+
+async function getTotalPowerHistories24HoursAgo() {
+  const targetMoment = moment().subtract(24, 'hours').seconds(0).milliseconds(0);
+  const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
+  const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
+
+  const data = await getPowerHistoriesByTime({ startTime, endTime });
+  const total = data.reduce((acc, item) => {
+    acc.p += item.p;
+    return acc;
+  }, { p: 0 });
+
+  return total?.p ? total.p / 1000 : 0;  // convert to MW
+
+}
 
 module.exports = cronJob
