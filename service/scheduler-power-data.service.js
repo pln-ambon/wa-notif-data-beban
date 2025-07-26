@@ -245,6 +245,11 @@ async function getTotalPowerHistories2HoursAgo() {
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
+
+  if (!data || data?.length === 0) {
+    return 0; // No data found, return 0
+  }
+
   const total = data.reduce((acc, item) => {
     acc.p += item.p;
     return acc;
@@ -260,6 +265,11 @@ async function getTotalPowerHistories24HoursAgo() {
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
+
+  if (!data || data?.length === 0) {
+    return 0; // No data found, return 0
+  }
+
   const total = data.reduce((acc, item) => {
     acc.p += item.p;
     return acc;
