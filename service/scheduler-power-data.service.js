@@ -2,7 +2,8 @@ const cron = require("node-cron");
 const moment = require("moment");
 const {
   getAllScadaUnitMeter,
-  insertIntoPowerHistories
+  insertIntoPowerHistories,
+  getPowerHistoriesByTime
 } = require("../model/scada_unit.model")
 const { loadDataMessage } = require("../utils/message-builder");
 const { sendMessageToWaBlas } = require("./wablas.service")
