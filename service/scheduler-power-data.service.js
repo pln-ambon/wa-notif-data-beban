@@ -113,7 +113,7 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
       }
 
       // GI WAAI
-      if (obj.unit_id[0] === 51 && (obj.unit_subname === "150-LINE1" || obj.unit_subname === "150-LINE2")) {
+      if (obj.unit_id[0] === 51 && (obj.unit_subname === "150-LINE1" || obj.unit_subname === "150-LINE2" || obj.unit_subname === "150-BMPP")) {
         acc[key].pTotal += obj.p / 1000 // MW
         if (obj.v) {
           acc[key].vTotal += obj.v
@@ -127,6 +127,10 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
 
         if (obj.unit_subname === "150-LINE2") {
           acc[key].current2 += obj.i
+        }
+
+        if (obj.unit_subname === "150-BMPP") {
+          acc[key].current3 += obj.i
         }
 
         acc[key].vAverage = acc[key].vTotal / acc[key].vLength
@@ -244,8 +248,12 @@ async function getTotalPowerHistories2HoursAgo() {
   const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
+  console.log(`Start Time 2 Hours ago: ${startTime}, End Time: ${endTime}`);
+
   const data = await getPowerHistoriesByTime({ startTime, endTime });
 
+  console.log(`Total data 2 Hours ago: ${data.length} records`);
+  
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0
   }
@@ -264,7 +272,11 @@ async function getTotalPowerHistories24HoursAgo() {
   const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
+  console.log(`Start Time 24 Hours ago: ${startTime}, End Time: ${endTime}`);
+
   const data = await getPowerHistoriesByTime({ startTime, endTime });
+
+  console.log(`Total data 24 Hours ago: ${data.length} records`);
 
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0

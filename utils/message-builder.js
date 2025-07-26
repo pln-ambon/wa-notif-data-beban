@@ -2,8 +2,8 @@ const { WA_GROUP_ID, WA_PRIVATE_ID } = require('../config')
 const { formatNumber } = require("./index")
 
 function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviation }) {
-  const ARROW_UP = '▲ Naik';
-  const ARROW_DOWN = '▼ Turun';
+  const ARROW_UP = '📈 Naik';
+  const ARROW_DOWN = '📉 Turun';
   
   const {
     "PLTD HATIVE KECIL": pltdHativeKecil,
@@ -32,7 +32,7 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     ========================
     *${day} ${notifTime}*
     ========================
-    Total Beban Sistem saat ini *${formatNumber(grandTotal?.p)}* MW
+    Total Beban Sistem saat ini *${formatNumber(grandTotal?.p)} MW*
     ${deviation2Hours > 0 ? ARROW_UP : ARROW_DOWN} *${formatNumber(Math.abs(deviation2Hours))} MW* dari 2 jam sebelumnya
     ${deviation24Hours > 0 ? ARROW_UP : ARROW_DOWN} *${formatNumber(Math.abs(deviation24Hours))} MW* di jam sama H-1
     ----------------------------------
@@ -60,12 +60,17 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     *GI WAAI       ➤ ${formatNumber(giWaai?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(giWaai?.detail[4]?.p)} MW
     TRAFO-2        : ${formatNumber(giWaai?.detail[5]?.p)} MW
+    TEGANGAN-TRAFO#1: ${formatNumber(giWaai?.detail[4]?.v)} KV
+    TEGANGAN-TRAFO#2: ${formatNumber(giWaai?.detail[5]?.v)} KV
+    LINE-BMPP      : ${formatNumber(giWaaiCurrent?.current3)} A
     LINE-PASSO#1   : ${formatNumber(giWaaiCurrent?.current1)} A
     LINE-PASSO#2   : ${formatNumber(giWaaiCurrent?.current2)} A
     ----------------------------------
     *GIS PASSO     ➤ ${formatNumber(gisPasso?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(gisPasso?.detail[4]?.p)} MW
     TRAFO-2        : ${formatNumber(gisPasso?.detail[5]?.p)} MW
+    TEGANGAN-TRAFO#1: ${formatNumber(gisPasso?.detail[4]?.v)} KV
+    TEGANGAN-TRAFO#2: ${formatNumber(gisPasso?.detail[5]?.v)} KV
     LINE-SIRIMAU#1 : ${formatNumber(gisPassoCurrent?.current3)} A
     LINE-SIRIMAU#2 : ${formatNumber(gisPassoCurrent?.current4)} A
     LINE-WAYAME#1  : ${formatNumber(gisPassoCurrent?.current1)} A
@@ -74,10 +79,14 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     *GI SIRIMAU    ➤ ${formatNumber(giSirimau?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(giSirimau?.detail[2]?.p)} MW
     TRAFO-2        : ${formatNumber(giSirimau?.detail[3]?.p)} MW
+    TEGANGAN-TRAFO#1: - KV
+    TEGANGAN-TRAFO#2: - KV
     ----------------------------------
     *GI HATIVE BESAR  ➤ ${formatNumber(giHativeBesar?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(giHativeBesar?.detail[2]?.p)} MW
     TRAFO-2        : ${formatNumber(giHativeBesar?.detail[3]?.p)} MW
+    TEGANGAN-TRAFO#1: ${formatNumber(giHativeBesar?.detail[2]?.v)} KV
+    TEGANGAN-TRAFO#2: ${formatNumber(giHativeBesar?.detail[3]?.v)} KV
     `
   const message = {
     "phone": WA_PRIVATE_ID,
