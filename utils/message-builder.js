@@ -1,4 +1,9 @@
-const { WA_GROUP_ID, WA_PRIVATE_ID } = require('../config')
+const { 
+  WA_GROUP_ID, 
+  WA_PRIVATE_ID, 
+  WA_GROUP_ID_POWER_DATA, 
+  WA_GROUP_ID_EVENT 
+} = require('../config')
 const { formatNumber } = require("./index")
 
 function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviation }) {
@@ -89,9 +94,9 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     TEGANGAN-TRAFO#2: ${formatNumber(giHativeBesar?.detail[3]?.v)} KV
     `
   const message = {
-    "phone": WA_PRIVATE_ID,
+    "phone": WA_GROUP_ID_POWER_DATA,
     "message": content,
-    "isGroup": false
+    "isGroup": "true"
   }
 
   return message
@@ -141,9 +146,9 @@ function dateEventMessage({day, notifTime, payload }) {
     Control Time   : ${formattedControlTime}
     `
   const message = {
-    "phone": WA_PRIVATE_ID,
+    "phone": WA_GROUP_ID_EVENT,
     "message": content,
-    "isGroup": false
+    "isGroup": "true"
   }
 
   return message

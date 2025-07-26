@@ -9,7 +9,9 @@ const {
   DB_PORT,
   WABLAS_URL,
   WABLAS_TOKEN,
-  WA_GROUP_ID,
+  // WA_GROUP_ID,
+  WA_GROUP_ID_POWER_DATA,
+  WA_GROUP_ID_EVENT,
   WA_PRIVATE_ID
 } = process.env
 
@@ -32,7 +34,9 @@ const config = {
   },
   WABLAS_URL,
   WABLAS_TOKEN,
-  WA_GROUP_ID,
+  // WA_GROUP_ID,
+  WA_GROUP_ID_POWER_DATA,
+  WA_GROUP_ID_EVENT,
   WA_PRIVATE_ID,
   PORT: PORT ? Number(PORT) : 7001
 }
