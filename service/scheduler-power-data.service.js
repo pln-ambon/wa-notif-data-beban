@@ -252,7 +252,7 @@ async function getTotalPowerHistories2HoursAgo() {
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
 
-  console.log(`Total data 2 Hours ago: ${data.length} records`);
+  console.log(`Total data 2 Hours ago: ${data} records`);
   
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0
@@ -276,7 +276,7 @@ async function getTotalPowerHistories24HoursAgo() {
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
 
-  console.log(`Total data 24 Hours ago: ${data.length} records`);
+  console.log(`Total data 24 Hours ago: ${data} records`);
 
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0
