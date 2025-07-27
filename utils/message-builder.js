@@ -84,8 +84,8 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     *GI SIRIMAU    ➤ ${formatNumber(giSirimau?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(giSirimau?.detail[2]?.p)} MW
     TRAFO-2        : ${formatNumber(giSirimau?.detail[3]?.p)} MW
-    TEGANGAN-TRAFO#1: ${formatNumber(giSirimau?.detail[2]?.p)} KV
-    TEGANGAN-TRAFO#2: ${formatNumber(giSirimau?.detail[3]?.p)} KV
+    TEGANGAN-TRAFO#1: ${formatNumber(giSirimau?.detail[2]?.v)} KV
+    TEGANGAN-TRAFO#2: ${formatNumber(giSirimau?.detail[3]?.v)} KV
     ----------------------------------
     *GI HATIVE BESAR  ➤ ${formatNumber(giHativeBesar?.total?.p)} MW*
     TRAFO-1        : ${formatNumber(giHativeBesar?.detail[2]?.p)} MW
