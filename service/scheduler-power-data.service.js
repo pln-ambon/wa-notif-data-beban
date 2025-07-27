@@ -212,6 +212,8 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
     const {
       "BMPP WAAI": bmppWaai,
       "PLTMG WAAI": pltmgWaai,
+      "PLTD POKA": pltdPoka,
+      "PLTD HATIVE KECIL": pltdHativeKecil,
     } = powerData
 
     const dataInsert = [
@@ -222,6 +224,14 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
       {
         unit_id: 12,
         p: bmppWaai?.total?.p ? bmppWaai?.total?.p * 1000 : 0,
+      },
+      {
+        unit_id: 13,
+        p: pltdPoka?.total?.p ? pltdPoka?.total?.p * 1000 : 0,
+      },
+      {
+        unit_id: 14,
+        p: pltdHativeKecil?.total?.p ? pltdHativeKecil?.total?.p * 1000 : 0,
       }
     ]
 
@@ -254,7 +264,7 @@ async function getTotalPowerHistories2HoursAgo() {
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
 
-  console.log(`Total data 2 Hours ago: ${data} records`);
+  // console.log(`Total data 2 Hours ago: ${data} records`);
   
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0
@@ -280,7 +290,7 @@ async function getTotalPowerHistories24HoursAgo() {
 
   const data = await getPowerHistoriesByTime({ startTime, endTime });
 
-  console.log(`Total data 24 Hours ago: ${data} records`);
+  // console.log(`Total data 24 Hours ago: ${data} records`);
 
   if (!data || data?.length === 0) {
     return 0; // No data found, return 0
