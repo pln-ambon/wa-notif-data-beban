@@ -11,12 +11,17 @@ const { formatDate } = require("../utils")
 
 const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
 
-// Running job every hour on minutes 00 and 30
-const cronJob = cron.schedule(`0,30 * * * *`, async () => {
+// Running job every hour
+const cronJob = cron.schedule(`0 * * * *`, async () => {
   try {
     const day = days[new Date().getDay()]
     const notifTime = formatDate(moment(new Date()).add(9, 'hours'))
     const data = await getAllScadaUnitMeter()
+
+    const now = new Date();
+    const hour = now.getHours();
+    const isEvenHour = hour % 2 === 0;
+    const isSpecialHour = hour + 9 === 19; // Special hour at 19:00 (UTC+9)
 
     const grandTotal = {
       p: 0,
@@ -197,17 +202,6 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
 
     powerData.grandTotal = grandTotal
 
-    // getdata power histories 2 hours ago
-    const totalPower2HoursAgo = await getTotalPowerHistories2HoursAgo();
-
-    // getdata power histories 24 hours ago
-    const totalPower24HoursAgo = await getTotalPowerHistories24HoursAgo();
-
-    const deviation = {
-      deviation2Hours: grandTotal.p - totalPower2HoursAgo,
-      deviation24Hours: grandTotal.p - totalPower24HoursAgo
-    }
-
     // insert data to histories
     const {
       "BMPP WAAI": bmppWaai,
@@ -237,16 +231,29 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
 
     await insertIntoPowerHistories({ payload: dataInsert })
 
-    // send message to wablas
-    const message = loadDataMessage({
-      powerPayload: powerData,
-      currentPayload: currentData,
-      day,
-      notifTime,
-      deviation
-    });
+    // send message to wablas only even hour or special hour (19:00)
+    if (isEvenHour || isSpecialHour) {
+      // getdata power histories 2 hours ago
+      const totalPower2HoursAgo = await getTotalPowerHistories2HoursAgo();
 
-    await sendMessageToWaBlas(message)
+      // getdata power histories 24 hours ago
+      const totalPower24HoursAgo = await getTotalPowerHistories24HoursAgo();
+
+      const deviation = {
+        deviation2Hours: grandTotal.p - totalPower2HoursAgo,
+        deviation24Hours: grandTotal.p - totalPower24HoursAgo
+      }
+      
+      const message = loadDataMessage({
+        powerPayload: powerData,
+        currentPayload: currentData,
+        day,
+        notifTime,
+        deviation
+      });
+  
+      await sendMessageToWaBlas(message)
+    }
 
   } catch (error) {
     console.log(error, "<<< error")
