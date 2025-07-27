@@ -244,7 +244,9 @@ const cronJob = cron.schedule(`0,30 * * * *`, async () => {
 });
 
 async function getTotalPowerHistories2HoursAgo() {
-  const targetMoment = moment().subtract(2, 'hours').seconds(0).milliseconds(0);
+  // Karena beda timezone 9 jam (UTC+9)
+  // Now  + 9 jam - 2 jam = +7 jam
+  const targetMoment = moment().add(7, 'hours').seconds(0).milliseconds(0); 
   const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
@@ -268,7 +270,9 @@ async function getTotalPowerHistories2HoursAgo() {
 }
 
 async function getTotalPowerHistories24HoursAgo() {
-  const targetMoment = moment().subtract(24, 'hours').seconds(0).milliseconds(0);
+  // Karena beda timezone 9 jam (UTC+9)
+  // Now  + 9 jam - 24 jam = -15 jam
+  const targetMoment = moment().subtract(15, 'hours').seconds(0).milliseconds(0);
   const startTime = targetMoment.clone().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:00');
   const endTime = targetMoment.clone().add(1, 'minute').format('YYYY-MM-DD HH:mm:59.999');
 
