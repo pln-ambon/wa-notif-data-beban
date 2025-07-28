@@ -21,9 +21,9 @@ const cronJob = cron.schedule(`0 * * * *`, async () => {
     const now = new Date();
     const hour = now.getHours();
     const isEvenHour = hour % 2 === 0;
-    const isSpecialHour = hour + 9 === 19; // Special hour at 19:00 (UTC+9)
+    const isSpecialHour = hour == 19;
 
-    console.log(`Current hour: ${hour}, Current + 9: ${hour + 9} isEvenHour: ${isEvenHour}, isSpecialHour: ${isSpecialHour}`);
+    console.log(`Current hour: ${hour}, isEvenHour: ${isEvenHour}, isSpecialHour: ${isSpecialHour}`);
 
     const grandTotal = {
       p: 0,
