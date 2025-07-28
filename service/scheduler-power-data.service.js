@@ -23,6 +23,8 @@ const cronJob = cron.schedule(`0 * * * *`, async () => {
     const isEvenHour = hour % 2 === 0;
     const isSpecialHour = hour + 9 === 19; // Special hour at 19:00 (UTC+9)
 
+    console.log(`Current hour: ${hour}, Current + 9: ${hour + 9} isEvenHour: ${isEvenHour}, isSpecialHour: ${isSpecialHour}`);
+
     const grandTotal = {
       p: 0,
       p_dmp_netto: 0,
