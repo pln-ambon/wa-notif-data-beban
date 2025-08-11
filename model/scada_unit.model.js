@@ -33,6 +33,8 @@ async function getDataEvent() {
   // Seleisih timezone 9 jam (UTC+9)
   const targetTime = moment().add(9, 'hours').subtract(1, 'minute').seconds(0).milliseconds(0).format('YYYY-MM-DD HH:mm:ss');
 
+  console.log(targetTime , "<<< targetTime event control");
+  
   const result = await pool.request()
     .input('targetTime', sql.DateTime, targetTime)
     .query(`
