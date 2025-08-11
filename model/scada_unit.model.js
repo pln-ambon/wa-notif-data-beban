@@ -43,6 +43,9 @@ async function getDataEvent() {
       WHERE SCL.controlTime >= @targetTime
     `);
 
+  console.log(result?.recordset, "<<<< result event control");
+  
+
   return result?.recordset;
 }
 
