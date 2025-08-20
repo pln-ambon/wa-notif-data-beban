@@ -116,7 +116,7 @@ function dateEventMessage({day, notifTime, payload }) {
     controlTime
   } = payload
 
-  const controlStatus = "-";
+  let controlStatus = "-";
   if (typeof controlString === "string") {
     if (controlString.includes("(1)")) {
       controlStatus = "On";
