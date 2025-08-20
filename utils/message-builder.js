@@ -5,6 +5,7 @@ const {
   WA_GROUP_ID_EVENT 
 } = require('../config')
 const { formatNumber } = require("./index")
+const moment = require("moment");
 
 function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviation }) {
   const ARROW_UP = '📈 Naik';
