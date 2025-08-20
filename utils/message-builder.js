@@ -129,7 +129,7 @@ function dateEventMessage({day, notifTime, payload }) {
   }
 
   const formattedControlTime = controlTime
-    ? moment(controlTime).locale('id').format('dddd, DD/MM/YYYY HH:mm:ss')
+    ? moment(controlTime).subtract(9, 'hours').locale('id').format('dddd, DD/MM/YYYY HH:mm:ss')
     : "-";
 
   const content = `
@@ -141,7 +141,7 @@ function dateEventMessage({day, notifTime, payload }) {
     Site           : ${substation}
     Unit           : ${point}; ${elemen}
     Control        : ${controlStatus}
-    Result         : ${result}
+    Result         : ${result ? "Berhasil" : "Gagal"}
     Reason         : ${failreason || "-"}
     Control By     : ${controlBy}
     Control Time   : ${formattedControlTime}
