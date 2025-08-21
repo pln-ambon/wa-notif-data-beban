@@ -6,7 +6,7 @@ const {
 } = require("../model/scada_unit.model")
 const { dateEventMessage } = require("../utils/message-builder");
 const { sendMessageToWaBlas } = require("./wablas.service")
-const { formatDate } = require("../utils")
+const { formatDateWithSecond } = require("../utils")
 
 const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
 
@@ -14,7 +14,7 @@ const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
 const cronJob = cron.schedule(`* * * * *`, async () => {
   try {
     const day = days[new Date().getDay()]
-    const notifTime = formatDate(moment(new Date()).add(9, 'hours'))
+    const notifTime = formatDateWithSecond(moment(new Date()).add(9, 'hours'))
     const data = await getDataEvent()
 
    for (const item of data) {

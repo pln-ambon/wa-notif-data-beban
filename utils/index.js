@@ -13,6 +13,25 @@ function formatDate(payload) {
   let hour = `${date.split("T")[1]}`
   let newHour = `${hour.split("Z")[0]}`
 
+  let hourMinute = newHour.split(":")[0] + ":" + newHour.split(":")[1]
+
+  return `${day} ${hourMinute}`
+}
+
+function formatDateWithSecond(payload) {
+	if (!payload) {
+		return undefined
+	}
+	
+  let date = payload.toISOString()
+
+  let day = `${date.split("T")[0].split("-")[2]}/${
+    date.split("T")[0].split("-")[1]
+  }/${date.split("T")[0].split("-")[0]}`
+
+  let hour = `${date.split("T")[1]}`
+  let newHour = `${hour.split("Z")[0]}`
+
   // let hourMinute = newHour.split(":")[0] + ":" + newHour.split(":")[1]
 
   return `${day} ${newHour}`
@@ -40,5 +59,6 @@ function formatNumber(value) {
 module.exports = {
   formatDate,
   timeDuration,
-  formatNumber
+  formatNumber,
+  formatDateWithSecond
 }
