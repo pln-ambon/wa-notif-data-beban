@@ -137,13 +137,13 @@ function dateEventMessage({day, notifTime, payload }) {
     ========================
     *${day} ${notifTime}*
     ========================
-    Id             : ${id}
-    Site           : ${substation}
-    Unit           : ${point}; ${elemen}
-    Control        : ${controlStatus}
-    Result         : ${result ? "Berhasil" : "Gagal"}
-    Reason         : ${failreason || "-"}
-    Control By     : ${controlBy}
+    Id                     : ${id}
+    Site                  : ${substation}
+    Unit                 : ${point}; ${elemen}
+    Control            : ${controlStatus}
+    Result              : ${result ? "Berhasil" : "Gagal"}
+    Reason            : ${failreason || "-"}
+    Control By       : ${controlBy}
     Control Time   : ${formattedControlTime}
     `
   const message = {
