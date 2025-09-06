@@ -49,6 +49,7 @@ async function getDataEvent() {
   return result?.recordset;
 }
 
+// sudah tidak dipakai, pindah menggunakan stored procedure
 async function insertIntoPowerHistories({ payload }) {
   if ( payload.length ) {
     const values = payload
@@ -72,7 +73,7 @@ async function getPowerHistoriesByTime({ startTime, endTime }) {
     .input('endTime', sql.DateTime2, endTime)
     .query(`
       SELECT *
-      FROM POWER_HISTORIES
+      FROM POWER_HIS_HOUR
       WHERE [time] >= @startTime AND [time] <= @endTime
     `);
 

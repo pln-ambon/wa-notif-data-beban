@@ -231,7 +231,8 @@ const cronJob = cron.schedule(`0 * * * *`, async () => {
       }
     ]
 
-    await insertIntoPowerHistories({ payload: dataInsert })
+    // dimatikan karena sudah pakai sql strored procedure
+    // await insertIntoPowerHistories({ payload: dataInsert })
 
     // send message to wablas only even hour or special hour (19:00)
     if (isEvenHour || isSpecialHour) {
