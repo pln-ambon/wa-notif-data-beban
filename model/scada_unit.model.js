@@ -75,6 +75,7 @@ async function getPowerHistoriesByTime({ startTime, endTime }) {
       SELECT *
       FROM POWER_HIS_HOUR
       WHERE [time] >= @startTime AND [time] <= @endTime
+      AND [unit_id] IN (11, 12, 13, 14)
     `);
 
   return result.recordset;
