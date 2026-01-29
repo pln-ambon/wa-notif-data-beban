@@ -33,6 +33,10 @@ function loadDataMessage({day, notifTime, powerPayload, currentPayload, deviatio
     deviation24Hours
   } = deviation
 
+  console.log(gisPasso.detail, "<<<<<<<<< gis passo detail");
+  console.log(gisPassoCurrent, "<<<<<<<<< gis passo current");
+  
+
   const content = `  
     *Data Beban - Sistem Ambon*
     ========================
